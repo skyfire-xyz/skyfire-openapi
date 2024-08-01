@@ -1,0 +1,258 @@
+openapi: 3.1.0
+info:
+  title: Financial Datasets API
+  version: "1.0.0"
+servers:
+  - url: https://api.skyfire.xyz
+components:
+  schemas:
+      description: Represents the parameters for a Crypto Price request.
+      properties:
+        symbol:
+          type: string
+          description: Cryptocurrency symbol.
+          example: BTCUSDC
+      required:
+        - symbol
+      type: object
+      additionalProperties: false
+    IncomeStatementsResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          ticker:
+            type: string
+            example: "<string>"
+          calendar_date:
+            type: string
+            format: date
+            example: "2023-12-25"
+          report_period:
+            type: string
+            format: date
+            example: "2023-12-25"
+          period:
+            type: string
+            example: quarterly
+          revenue:
+            type: number
+            example: 123
+          cost_of_revenue:
+            type: number
+            example: 123
+          gross_profit:
+            type: number
+            example: 123
+          operating_expense:
+            type: number
+            example: 123
+          selling_general_and_administrative_expenses:
+            type: number
+            example: 123
+          research_and_development:
+            type: number
+            example: 123
+          operating_income:
+            type: number
+            example: 123
+          interest_expense:
+            type: number
+            example: 123
+          ebit:
+            type: number
+            example: 123
+          income_tax_expense:
+            type: number
+            example: 123
+          net_income_discontinued_operations:
+            type: number
+            example: 123
+          net_income_non_controlling_interests:
+            type: number
+            example: 123
+          net_income:
+            type: number
+            example: 123
+          net_income_common_stock:
+            type: number
+            example: 123
+          preferred_dividends_impact:
+            type: number
+            example: 123
+          consolidated_income:
+            type: number
+            example: 123
+          earnings_per_share:
+            type: number
+            example: 123
+          earnings_per_share_diluted:
+            type: number
+            example: 123
+          dividends_per_common_share:
+            type: number
+            example: 123
+          weighted_average_shares:
+            type: number
+            example: 123
+          weighted_average_shares_diluted:
+            type: number
+            example: 123
+  securitySchemes:
+    api:
+      type: apiKey
+      in: header
+      name: skyfire-api-key
+paths:
+  "/proxy/financial-datasets-ai/financials/income-statements":
+    get:
+      summary: Income Statements
+      description: ""
+      operationId: income-statements
+      tags:
+        - Financial Datasets AI
+      security:
+        - api: []
+      parameters:
+        - name: ticker
+          in: query
+          description: Ticker name
+          required: true
+          schema:
+            type: string
+            default: GOOGL
+        - name: period
+          in: query
+          description: '["annual","quarterly","ttm"]'
+          required: true
+          schema:
+            type: string
+            default: annual
+        - name: limit
+          in: query
+          description: Number of statements to return
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/IncomeStatementsResponse"
+        "400":
+          description: "400"
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{}"
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  "/proxy/financial-datasets-ai/financials/balance-sheets":
+    get:
+      summary: Balance Sheets
+      description: ""
+      operationId: balance-sheets
+      tags:
+        - Financial Datasets AI
+      security:
+        - api: []
+      parameters:
+        - name: ticker
+          in: query
+          required: true
+          schema:
+            type: string
+            default: GOOGL
+        - name: period
+          in: query
+          description: '["annual","quarterly","ttm"]'
+          schema:
+            type: string
+            default: annual
+        - name: limit
+          in: query
+          description: Number of balance sheets to return
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{}"
+              schema:
+                type: object
+                properties: {}
+        "400":
+          description: "400"
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{}"
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  "/proxy/financial-datasets-ai/financials/cash-flow-statements":
+    get:
+      summary: Cash Flow Statements
+      description: ""
+      operationId: cash-flow-statements
+      security:
+        - api: []
+      tags:
+        - Financial Datasets AI
+      parameters:
+        - name: ticker
+          in: query
+          required: true
+          schema:
+            type: string
+            default: GOOGL
+        - name: period
+          in: query
+          description: '["annual","quarterly","ttm"]'
+          required: true
+          schema:
+            type: string
+            default: annual
+        - name: limit
+          in: query
+          description: Number of statements to return
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{}"
+              schema:
+                type: object
+                properties: {}
+        "400":
+          description: "400"
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{}"
+              schema:
+                type: object
+                properties: {}
+      deprecated: false

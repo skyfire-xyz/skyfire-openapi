@@ -872,7 +872,7 @@ paths:
       security:
         - api: []
       parameters: []
-  "/proxy/api-ninja/v1/weather":
+  "/v1/receivers/api-toolkit/weather":
     get:
       operationId: ApiWeather
       responses:
@@ -905,7 +905,7 @@ paths:
           schema:
             format: double
             type: number
-  "/proxy/api-ninja/v1/stockprice":
+  "/v1/receivers/api-toolkit/stockprice":
     get:
       operationId: ApiStock
       responses:
@@ -930,7 +930,7 @@ paths:
           required: true
           schema:
             type: string
-  "/proxy/api-ninja/v1/iplookup":
+  "/v1/receivers/api-toolkit/iplookup":
     get:
       operationId: ApiIPLookup
       responses:
@@ -956,7 +956,7 @@ paths:
           schema:
             type: string
           example: 73.9.149.180
-  "/proxy/api-ninja/v1/dnslookup":
+  "/v1/receivers/api-toolkit/dnslookup":
     get:
       operationId: ApiDNSLookup
       responses:
@@ -980,7 +980,7 @@ paths:
           schema:
             type: string
           example: example.com
-  "/proxy/api-ninja/v1/cryptoprice":
+  "/v1/receivers/api-toolkit/cryptoprice":
     get:
       operationId: ApiCryptoPrice
       responses:

@@ -1,0 +1,565 @@
+openapi: 3.1.0
+info:
+  title: Skyfire API
+  version: "1.0.0"
+servers:
+  - url: https://api.skyfire.xyz
+components:
+  schemas:
+    PaymentPayload:
+      description: Represents the payload for a payment transaction.
+      properties:
+        status:
+          type: string
+          description: The status of the payment.
+        sourceName:
+          type: string
+          description: The name of the payment source.
+        sourceAddress:
+          type: string
+          description: The address of the payment source.
+        destinationName:
+          type: string
+          description: The name of the payment destination.
+        destinationAddress:
+          type: string
+          description: The address of the payment destination.
+        amount:
+          type: string
+          description: |-
+            The amount of the token used for the payment.
+            This is a string representation of the amount in the smallest unit of the token (e.g., wei for Ethereum). Use the `displayAmount` field for user-friendly display.
+        baseAmount:
+          type: string
+          description: |-
+            This is a string representation of the amount in the token's base unit.
+            For example, if the token has 18 decimal places, this would be the amount divided by 10^18.
+            Together with the `currency` field, this can be used to display the payment amount in a user-friendly format. IE "10.00 USDC".
+        currency:
+          type: string
+          enum:
+            - USDC
+            - MATIC
+          description:
+            The currency of the payment. Supported values are 'USDC' or
+            'MATIC'.
+        generatedDate:
+          type: string
+          format: date-time
+          description: The date when the payment was generated.
+        message:
+          type: string
+          description: An optional message or note associated with the payment.
+      required:
+        - sourceAddress
+        - destinationAddress
+        - amount
+      type: object
+      additionalProperties: false
+    APINinjaWeatherResponse:
+      properties:
+        wind_speed:
+          type: number
+          format: double
+          description: The wind speed in meters per second.
+        wind_degrees:
+          type: number
+          format: double
+          description: The wind direction in degrees.
+        temp:
+          type: number
+          format: double
+          description: The temperature in Celsius.
+        humidity:
+          type: number
+          format: double
+          description: The humidity percentage.
+        sunset:
+          type: number
+          format: double
+          description: The UNIX timestamp of the sunset time.
+        min_temp:
+          type: number
+          format: double
+          description: The minimum temperature in Celsius.
+        cloud_pct:
+          type: number
+          format: double
+          description: The cloud coverage percentage.
+        feels_like:
+          type: number
+          format: double
+          description: The "feels like" temperature in Celsius.
+        sunrise:
+          type: number
+          format: double
+          description: The UNIX timestamp of the sunrise time.
+        max_temp:
+          type: number
+          format: double
+          description: The maximum temperature in Celsius.
+        payment:
+          "$ref": "#/components/schemas/PaymentPayload"
+          description: The payment details associated with the response.
+      required:
+        - wind_speed
+        - wind_degrees
+        - temp
+        - humidity
+        - sunset
+        - min_temp
+        - cloud_pct
+        - feels_like
+        - sunrise
+        - max_temp
+      type: object
+      additionalProperties: false
+    APINinjaWeatherParams:
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude of the desired location.
+        lon:
+          type: number
+          format: double
+          description: Longitude of the desired location.
+      required:
+        - lat
+        - lon
+      type: object
+      additionalProperties: false
+    APINinjaStockResponse:
+      properties:
+        ticker:
+          type: string
+          description: Stock ticker symbol (e.g., AAPL).
+        name:
+          type: string
+          description: The full name of the company (e.g., Apple Inc.).
+        price:
+          type: number
+          format: double
+          description: The current stock price.
+        exchange:
+          type: string
+          description: The stock exchange where the stock is listed (e.g., NASDAQ).
+        updated:
+          type: number
+          format: double
+          description:
+            The last update time of the stock information, in Unix timestamp
+            format.
+        payment:
+          "$ref": "#/components/schemas/PaymentPayload"
+          description: The payment details associated with the response.
+      required:
+        - ticker
+        - name
+        - price
+        - exchange
+        - updated
+      type: object
+      additionalProperties: false
+    APINinjaStockParams:
+      properties:
+        ticker:
+          type: string
+          description: Stock ticker symbol (e.g. AAPL).
+      required:
+        - ticker
+      type: object
+      additionalProperties: false
+    APINinjaIPLookupResponse:
+      description: Represents the response from an IP Lookup request.
+      properties:
+        address:
+          type: string
+          description: The IP address of the query.
+        timezone:
+          type: string
+          description: The time zone related to the IP address.
+        region:
+          type: string
+          description:
+            The region name where the IP address is located. In the United
+            States, this is equivalent to the state.
+        region_code:
+          type: string
+          description:
+            The region code of the IP address location. In the United States,
+            this is equivalent to the 2-letter state abbreviation.
+        country:
+          type: string
+          description: The name of the country where the IP address is located.
+        country_code:
+          type: string
+          description: The 2-letter country code of the IP address location.
+        is_valid:
+          type: boolean
+          description: The validity status of the IP address.
+        payment:
+          "$ref": "#/components/schemas/PaymentPayload"
+          description: The payment details associated with the response.
+      required:
+        - address
+        - timezone
+        - region
+        - region_code
+        - country
+        - country_code
+        - is_valid
+      type: object
+      additionalProperties: false
+    APINinjaIPLookupParams:
+      description: Represents the parameters for an IP Lookup request.
+      properties:
+        address:
+          type: string
+          description: IP Address to query. Must be in the format A.B.C.D.
+          example: 73.9.149.180
+      required:
+        - address
+      type: object
+      additionalProperties: false
+    APINinjaDNSRecord:
+      description: Represents a DNS record in the DNS Lookup response.
+      properties:
+        record_type:
+          type: string
+          enum:
+            - NS
+            - PTR
+            - SRV
+            - SOA
+            - CAA
+          description: The type of DNS record.
+        value:
+          type: string
+          description: The value of the DNS record.
+        priority:
+          type: number
+          format: double
+          description: The priority of the DNS record (for SRV records).
+        mname:
+          type: string
+          description: The master name server for the zone (for SOA records).
+        rname:
+          type: string
+          description:
+            The email address of the administrator responsible for the
+            zone (for SOA records).
+        serial:
+          type: number
+          format: double
+          description: The serial number for the zone (for SOA records).
+        refresh:
+          type: number
+          format: double
+          description: The refresh interval for secondary name servers (for SOA records).
+        retry:
+          type: number
+          format: double
+          description: The retry interval for secondary name servers (for SOA records).
+        expire:
+          type: number
+          format: double
+          description: The expiration time for secondary name servers (for SOA records).
+        ttl:
+          type: number
+          format: double
+          description: The minimum TTL for negative caching (for SOA records).
+      required:
+        - record_type
+      type: object
+      additionalProperties: false
+    APINinjaDNSLookupResponse:
+      description: Represents the response from a DNS Lookup request.
+      properties:
+        records:
+          items:
+            "$ref": "#/components/schemas/APINinjaDNSRecord"
+          type: array
+          description: An array of DNS records associated with the domain.
+        payment:
+          "$ref": "#/components/schemas/PaymentPayload"
+          description: The payment details associated with the response.
+      required:
+        - records
+      type: object
+      additionalProperties: false
+    APINinjaDNSLookupParams:
+      description: Represents the parameters for a Web Scraper request.
+      properties:
+        url:
+          type: string
+          description: URL to scrape.
+          example: https://example.com
+        text_only:
+          type: boolean
+          description:
+            Whether to only extract visible text (ignores HTML tags and
+            metadata).
+          default: false
+        user_agent:
+          type: string
+          description: User-Agent string to use in the request header.
+      required:
+        - url
+      type: object
+      additionalProperties: false
+    APINinjaCryptoPriceResponse:
+      description: Represents the response from a Crypto Price request.
+      properties:
+        symbol:
+          type: string
+          description: The cryptocurrency symbol.
+        price:
+          type: string
+          description: The current price of the cryptocurrency.
+        timestamp:
+          type: number
+          format: double
+          description: The timestamp of the price data (UNIX timestamp in seconds).
+        payment:
+          "$ref": "#/components/schemas/PaymentPayload"
+          description: The payment details associated with the response.
+      required:
+        - symbol
+        - price
+        - timestamp
+      type: object
+      additionalProperties: false
+    APINinjaCryptoPriceParams:
+      description: Represents the parameters for a Crypto Price request.
+      properties:
+        symbol:
+          type: string
+          description: Cryptocurrency symbol.
+          example: BTCUSDC
+      required:
+        - symbol
+      type: object
+      additionalProperties: false
+    IncomeStatementsResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          ticker:
+            type: string
+            example: "<string>"
+          calendar_date:
+            type: string
+            format: date
+            example: "2023-12-25"
+          report_period:
+            type: string
+            format: date
+            example: "2023-12-25"
+          period:
+            type: string
+            example: quarterly
+          revenue:
+            type: number
+            example: 123
+          cost_of_revenue:
+            type: number
+            example: 123
+          gross_profit:
+            type: number
+            example: 123
+          operating_expense:
+            type: number
+            example: 123
+          selling_general_and_administrative_expenses:
+            type: number
+            example: 123
+          research_and_development:
+            type: number
+            example: 123
+          operating_income:
+            type: number
+            example: 123
+          interest_expense:
+            type: number
+            example: 123
+          ebit:
+            type: number
+            example: 123
+          income_tax_expense:
+            type: number
+            example: 123
+          net_income_discontinued_operations:
+            type: number
+            example: 123
+          net_income_non_controlling_interests:
+            type: number
+            example: 123
+          net_income:
+            type: number
+            example: 123
+          net_income_common_stock:
+            type: number
+            example: 123
+          preferred_dividends_impact:
+            type: number
+            example: 123
+          consolidated_income:
+            type: number
+            example: 123
+          earnings_per_share:
+            type: number
+            example: 123
+          earnings_per_share_diluted:
+            type: number
+            example: 123
+          dividends_per_common_share:
+            type: number
+            example: 123
+          weighted_average_shares:
+            type: number
+            example: 123
+          weighted_average_shares_diluted:
+            type: number
+            example: 123
+  securitySchemes:
+    api:
+      type: apiKey
+      in: header
+      name: skyfire-api-key
+paths:
+  "/v1/receivers/api-toolkit/weather":
+    get:
+      operationId: ApiWeather
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/APINinjaWeatherResponse"
+      description:
+        The Weather API provides the latest weather information for any
+        geographic location in the world.
+      summary: Weather
+      tags:
+        - API Ninja
+      security:
+        - api: []
+      parameters:
+        - description: Latitude of the desired location.
+          in: query
+          name: lat
+          required: true
+          schema:
+            format: double
+            type: number
+        - description: Longitude of the desired location.
+          in: query
+          name: lon
+          required: true
+          schema:
+            format: double
+            type: number
+  "/v1/receivers/api-toolkit/stockprice":
+    get:
+      operationId: ApiStock
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/APINinjaStockResponse"
+      description:
+        The Stock Price API provides access to real-time stock market prices
+        for companies in every major exchange around the world.
+      tags:
+        - API Ninja
+      summary: Stock Price
+      security:
+        - api: []
+      parameters:
+        - description: Stock ticker symbol (e.g. AAPL).
+          in: query
+          name: ticker
+          required: true
+          schema:
+            type: string
+  "/v1/receivers/api-toolkit/iplookup":
+    get:
+      operationId: ApiIPLookup
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/APINinjaIPLookupResponse"
+      description:
+        The IP Lookup API provides location information for any valid IP
+        address.
+      tags:
+        - API Ninja
+      summary: IP Lookup
+      security:
+        - api: []
+      parameters:
+        - description: IP Address to query. Must be in the format A.B.C.D.
+          in: query
+          name: address
+          required: true
+          schema:
+            type: string
+          example: 73.9.149.180
+  "/v1/receivers/api-toolkit/dnslookup":
+    get:
+      operationId: ApiDNSLookup
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/APINinjaDNSLookupResponse"
+      description: The DNS Lookup API retrieves DNS records for any given domain.
+      summary: DNS Lookup
+      tags:
+        - API Ninja
+      security:
+        - api: []
+      parameters:
+        - description: Valid domain to check (e.g. example.com).
+          in: query
+          name: domain
+          required: true
+          schema:
+            type: string
+          example: example.com
+  "/v1/receivers/api-toolkit/cryptoprice":
+    get:
+      operationId: ApiCryptoPrice
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/APINinjaCryptoPriceResponse"
+      description:
+        The Crypto Price API provides access to live market prices for
+        several hundred different cryptocurrencies.
+      summary: Crypto Price
+      tags:
+        - API Ninja
+      security:
+        - api: []
+      parameters:
+        - description: Cryptocurrency symbol.
+          in: query
+          name: symbol
+          required: true
+          schema:
+            type: string
+          example: LTCBTC
