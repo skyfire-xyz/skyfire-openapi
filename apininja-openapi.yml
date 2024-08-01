@@ -6,57 +6,7 @@ servers:
   - url: https://api.skyfire.xyz
 components:
   schemas:
-    PaymentPayload:
-      description: Represents the payload for a payment transaction.
-      properties:
-        status:
-          type: string
-          description: The status of the payment.
-        sourceName:
-          type: string
-          description: The name of the payment source.
-        sourceAddress:
-          type: string
-          description: The address of the payment source.
-        destinationName:
-          type: string
-          description: The name of the payment destination.
-        destinationAddress:
-          type: string
-          description: The address of the payment destination.
-        amount:
-          type: string
-          description: |-
-            The amount of the token used for the payment.
-            This is a string representation of the amount in the smallest unit of the token (e.g., wei for Ethereum). Use the `displayAmount` field for user-friendly display.
-        baseAmount:
-          type: string
-          description: |-
-            This is a string representation of the amount in the token's base unit.
-            For example, if the token has 18 decimal places, this would be the amount divided by 10^18.
-            Together with the `currency` field, this can be used to display the payment amount in a user-friendly format. IE "10.00 USDC".
-        currency:
-          type: string
-          enum:
-            - USDC
-            - MATIC
-          description:
-            The currency of the payment. Supported values are 'USDC' or
-            'MATIC'.
-        generatedDate:
-          type: string
-          format: date-time
-          description: The date when the payment was generated.
-        message:
-          type: string
-          description: An optional message or note associated with the payment.
-      required:
-        - sourceAddress
-        - destinationAddress
-        - amount
-      type: object
-      additionalProperties: false
-    APINinjaWeatherResponse:
+   APINinjaWeatherResponse:
       properties:
         wind_speed:
           type: number
@@ -98,9 +48,6 @@ components:
           type: number
           format: double
           description: The maximum temperature in Celsius.
-        payment:
-          "$ref": "#/components/schemas/PaymentPayload"
-          description: The payment details associated with the response.
       required:
         - wind_speed
         - wind_degrees
@@ -150,9 +97,6 @@ components:
           description:
             The last update time of the stock information, in Unix timestamp
             format.
-        payment:
-          "$ref": "#/components/schemas/PaymentPayload"
-          description: The payment details associated with the response.
       required:
         - ticker
         - name
@@ -198,9 +142,6 @@ components:
         is_valid:
           type: boolean
           description: The validity status of the IP address.
-        payment:
-          "$ref": "#/components/schemas/PaymentPayload"
-          description: The payment details associated with the response.
       required:
         - address
         - timezone
@@ -281,9 +222,6 @@ components:
             "$ref": "#/components/schemas/APINinjaDNSRecord"
           type: array
           description: An array of DNS records associated with the domain.
-        payment:
-          "$ref": "#/components/schemas/PaymentPayload"
-          description: The payment details associated with the response.
       required:
         - records
       type: object
@@ -321,9 +259,6 @@ components:
           type: number
           format: double
           description: The timestamp of the price data (UNIX timestamp in seconds).
-        payment:
-          "$ref": "#/components/schemas/PaymentPayload"
-          description: The payment details associated with the response.
       required:
         - symbol
         - price
@@ -429,7 +364,7 @@ components:
       in: header
       name: skyfire-api-key
 paths:
-  "/v1/receivers/api-toolkit/weather":
+  "/proxy/api-ninja/v1/weather":
     get:
       operationId: ApiWeather
       responses:
@@ -462,7 +397,7 @@ paths:
           schema:
             format: double
             type: number
-  "/v1/receivers/api-toolkit/stockprice":
+  "/proxy/api-ninja/v1/stockprice":
     get:
       operationId: ApiStock
       responses:
@@ -487,7 +422,7 @@ paths:
           required: true
           schema:
             type: string
-  "/v1/receivers/api-toolkit/iplookup":
+  "/proxy/api-ninja/v1/iplookup":
     get:
       operationId: ApiIPLookup
       responses:
@@ -513,7 +448,7 @@ paths:
           schema:
             type: string
           example: 73.9.149.180
-  "/v1/receivers/api-toolkit/dnslookup":
+  "/proxy/api-ninja/v1/dnslookup":
     get:
       operationId: ApiDNSLookup
       responses:
@@ -537,7 +472,7 @@ paths:
           schema:
             type: string
           example: example.com
-  "/v1/receivers/api-toolkit/cryptoprice":
+  "/proxy/api-ninja/v1/cryptoprice":
     get:
       operationId: ApiCryptoPrice
       responses:

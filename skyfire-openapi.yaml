@@ -905,7 +905,7 @@ paths:
           schema:
             format: double
             type: number
-  "/v1/receivers/api-toolkit/stockprice":
+  "/v1/receivers/api-toolkit/stock":
     get:
       operationId: ApiStock
       responses:
