@@ -1,6 +1,8 @@
 openapi: 3.1.0
 info:
-  title: Skyfire API
+  title: Skyfire Custom GPT API
+  description: |-
+    This subset of the Skyfire API is designed for creating a Skyfire Custom GPT. It includes endpoints for wallet management, API Ninja tools, and integration with financial datasets.
   version: "1.0.0"
 servers:
   - url: https://api.skyfire.xyz
@@ -731,7 +733,7 @@ components:
             type: number
             example: 123
   securitySchemes:
-    ApiKeyAuth:
+    api:
       type: apiKey
       in: header
       name: skyfire-api-key
@@ -768,6 +770,8 @@ paths:
       summary: Get Wallet Balance
       tags:
         - Wallet Management
+      security:
+        - api: []
       parameters: []
   "/v1/wallet/transactions":
     get:
@@ -780,6 +784,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/TransactionsResponse"
         "401":
+          description: Chat Error
           content:
             application/json:
               schema:
@@ -798,6 +803,8 @@ paths:
       summary: Get Wallet Transactions
       tags:
         - Wallet Management
+      security:
+        - api: []
       parameters: []
   "/v1/wallet/redemptions":
     get:
@@ -810,6 +817,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/RedemptionsResponse"
         "401":
+          description: Chat Error
           content:
             application/json:
               schema:
@@ -828,6 +836,8 @@ paths:
       summary: Get Wallet Redemptions
       tags:
         - Wallet Management
+      security:
+        - api: []
       parameters: []
   "/v1/wallet/claims":
     get:
@@ -861,10 +871,12 @@ paths:
       summary: Get Wallet Claims
       tags:
         - Wallet Management
+      security:
+        - api: []
       parameters: []
-  "/proxy/api-ninja/v1/weather":
+  "/v1/receivers/api-toolkit/weather":
     get:
-      operationId: APINinjaWeather
+      operationId: ApiWeather
       responses:
         "200":
           description: Ok
@@ -878,6 +890,8 @@ paths:
       summary: Weather
       tags:
         - API Ninja
+      security:
+        - api: []
       parameters:
         - description: Latitude of the desired location.
           in: query
@@ -893,9 +907,9 @@ paths:
           schema:
             format: double
             type: number
-  "/proxy/api-ninja/v1/stock":
+  "/v1/receivers/api-toolkit/stock":
     get:
-      operationId: APINinjaStock
+      operationId: ApiStock
       responses:
         "200":
           description: Ok
@@ -909,6 +923,8 @@ paths:
       tags:
         - API Ninja
       summary: Stock Price
+      security:
+        - api: []
       parameters:
         - description: Stock ticker symbol (e.g. AAPL).
           in: query
@@ -916,9 +932,9 @@ paths:
           required: true
           schema:
             type: string
-  "/proxy/api-ninja/v1/iplookup":
+  "/v1/receivers/api-toolkit/iplookup":
     get:
-      operationId: APINinjaIPLookup
+      operationId: ApiIPLookup
       responses:
         "200":
           description: Ok
@@ -932,6 +948,8 @@ paths:
       tags:
         - API Ninja
       summary: IP Lookup
+      security:
+        - api: []
       parameters:
         - description: IP Address to query. Must be in the format A.B.C.D.
           in: query
@@ -940,9 +958,9 @@ paths:
           schema:
             type: string
           example: 73.9.149.180
-  "/proxy/api-ninja/v1/dnslookup":
+  "/v1/receivers/api-toolkit/dnslookup":
     get:
-      operationId: APINinjaDNSLookup
+      operationId: ApiDNSLookup
       responses:
         "200":
           description: Ok
@@ -954,6 +972,8 @@ paths:
       summary: DNS Lookup
       tags:
         - API Ninja
+      security:
+        - api: []
       parameters:
         - description: Valid domain to check (e.g. example.com).
           in: query
@@ -962,9 +982,9 @@ paths:
           schema:
             type: string
           example: example.com
-  "/proxy/api-ninja/v1/cryptoprice":
+  "/v1/receivers/api-toolkit/cryptoprice":
     get:
-      operationId: APINinjaCryptoPrice
+      operationId: ApiCryptoPrice
       responses:
         "200":
           description: Ok
@@ -978,6 +998,8 @@ paths:
       summary: Crypto Price
       tags:
         - API Ninja
+      security:
+        - api: []
       parameters:
         - description: Cryptocurrency symbol.
           in: query
@@ -993,6 +1015,8 @@ paths:
       operationId: income-statements
       tags:
         - Financial Datasets AI
+      security:
+        - api: []
       parameters:
         - name: ticker
           in: query
@@ -1040,6 +1064,8 @@ paths:
       operationId: balance-sheets
       tags:
         - Financial Datasets AI
+      security:
+        - api: []
       parameters:
         - name: ticker
           in: query
@@ -1087,6 +1113,8 @@ paths:
       summary: Cash Flow Statements
       description: ""
       operationId: cash-flow-statements
+      security:
+        - api: []
       tags:
         - Financial Datasets AI
       parameters:
@@ -1132,5 +1160,3 @@ paths:
                 type: object
                 properties: {}
       deprecated: false
-security:
-  - ApiKeyAuth: []
