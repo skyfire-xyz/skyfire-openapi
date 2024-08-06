@@ -657,7 +657,7 @@ components:
       name: skyfire-api-key
 
   schemas:
-    Error:
+    OpenAIError:
       type: object
       properties:
         code:
@@ -677,11 +677,11 @@ components:
         - message
         - param
         - code
-    ErrorResponse:
+    OpenAIErrorResponse:
       type: object
       properties:
         error:
-          $ref: "#/components/schemas/Error"
+          $ref: "#/components/schemas/OpenAIError"
       required:
         - error
 
@@ -6401,7 +6401,7 @@ components:
         - $ref: "#/components/schemas/RunStreamEvent"
         - $ref: "#/components/schemas/RunStepStreamEvent"
         - $ref: "#/components/schemas/MessageStreamEvent"
-        - $ref: "#/components/schemas/ErrorEvent"
+        - $ref: "#/components/schemas/OpenAIErrorEvent"
         - $ref: "#/components/schemas/DoneEvent"
       x-oaiMeta:
         name: Assistant stream events
@@ -6718,14 +6718,14 @@ components:
           x-oaiMeta:
             dataDescription: "`data` is a [message](https://platform.openai.com/docs/api-reference/messages/object)"
 
-    ErrorEvent:
+    OpenAIErrorEvent:
       type: object
       properties:
         event:
           type: string
           enum: ["error"]
         data:
-          $ref: "#/components/schemas/Error"
+          $ref: "#/components/schemas/OpenAIError"
       required:
         - event
         - data
